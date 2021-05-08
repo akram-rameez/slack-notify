@@ -50,6 +50,7 @@
     "node": ">=12"
   },
   "dependencies": {
+    "@slack/web-api": "^6.1.0",
     "node-cron": "^3.0.0"
   }
 }
