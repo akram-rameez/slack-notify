@@ -1,0 +1,6 @@
+version: "3.6"
+services:
+    node:
+        env_file: ../.env.development
+        environment:
+          DEBUG: 'true'

@@ -1,0 +1,10 @@
+version: "3.6"
+services:
+    node:
+        image: node
+        build: ../.
+        command: yarn run dev
+        volumes:
+            - ../:/usr/app
+            - /usr/app/node_modules
+        env_file: ../.env.development
