@@ -4,9 +4,7 @@ services:
         build:
             context: ../
             target: production
-        command: yarn start
+        command: /app/.entrypoint.prod.sh
         env_file: ../.env.production
         volumes:
-            - ../:/src
-            - /src/node_modules
-            - /src/dist
+            - ../:/app

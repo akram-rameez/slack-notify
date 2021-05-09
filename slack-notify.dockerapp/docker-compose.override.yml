@@ -4,5 +4,5 @@ services:
         build:
             context: ../
             target: dev
-        command: yarn dev
+        command: /app/.entrypoint.sh
         env_file: ../.env.development
