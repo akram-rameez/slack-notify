@@ -8,7 +8,6 @@ FROM base as production
 ENV NODE_ENV=production
 RUN npm ci
 COPY . /
-RUN yarn build
 CMD ["yarn", "start"]
 
 FROM base as dev
