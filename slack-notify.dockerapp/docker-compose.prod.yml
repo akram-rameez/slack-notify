@@ -1,7 +1,8 @@
-version: "3.6"
+version: "3.8"
 services:
     web:
         build:
+            context: ../
             target: production
         command: yarn start
         env_file: ../.env.production
