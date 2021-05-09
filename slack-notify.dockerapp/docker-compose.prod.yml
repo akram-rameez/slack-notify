@@ -3,5 +3,5 @@ services:
     web:
         build:
             target: production
-        command: yarn run start
+        command: node dist/index.js
         env_file: ../.env.production
