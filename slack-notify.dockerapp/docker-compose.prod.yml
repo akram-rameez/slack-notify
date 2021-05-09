@@ -5,3 +5,7 @@ services:
             target: production
         command: yarn start
         env_file: ../.env.production
+        volumes:
+            - ../:/src
+            - /src/node_modules
+            - /src/dist
