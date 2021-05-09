@@ -6,8 +6,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "tsnd --respawn --files -r @babel/register --inspect -- src/index.ts",
-    "build": "babel ./src -d ./dist --extensions .ts --copy-files",
-    "prestart": "babel ./src -d ./dist --extensions .ts --copy-files",
+    "build": "./node_modules/babel-cli/bin/babel ./src -d ./dist --extensions .ts --copy-files",
     "typecheck": "tsc",
     "start": "node dist/index.js",
     "lint:base": "eslint --ext .js,.json,.ts",

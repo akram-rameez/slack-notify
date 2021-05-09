@@ -1,5 +1,6 @@
 #!/bin/bash
 
 cp -r /cache/node_modules/. /app/node_modules/
-exec npm build
-exec npm start
+ls node_modules/babel-cli/bin
+exec yarn build
+exec yarn start
