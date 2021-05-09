@@ -6,5 +6,3 @@ services:
             target: production
         command: /app/.entrypoint.prod.sh
         env_file: ../.env.production
-        volumes:
-            - ../:/app

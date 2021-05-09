@@ -1,19 +1,17 @@
 FROM node as base
-RUN mkdir /cache
-WORKDIR /cache
-COPY package*.json ./
+RUN mkdir -p /temp
+WORKDIR /temp
+COPY package*.json .
 COPY yarn.lock .
+RUN npm install --force -g yarn
+RUN yarn
+RUN mkdir -p /app
+WORKDIR /app
 
 FROM base as production
 ENV NODE_ENV=production
-RUN npm ci
-RUN mkdir /app
-WORKDIR /app
-CMD ["yarn", "start"]
+COPY . .
 
 FROM base as dev
 ENV NODE_ENV=development
-RUN yarn
-RUN mkdir /app
-WORKDIR /app
-CMD ["yarn", "dev"]
+COPY . .
