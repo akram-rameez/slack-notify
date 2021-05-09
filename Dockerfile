@@ -1,5 +1,17 @@
-FROM node
-WORKDIR /usr/app
-COPY package.json .
-RUN npm install --quiet
-COPY . .
+FROM node as base
+
+WORKDIR /src
+COPY package*.json /
+COPY yarn.lock /
+
+FROM base as production
+ENV NODE_ENV=production
+RUN npm ci
+COPY . /
+CMD ["node", "dist/index.js"]
+
+FROM base as dev
+ENV NODE_ENV=development
+RUN yarn
+COPY . /
+CMD ["yarn", "dev"]

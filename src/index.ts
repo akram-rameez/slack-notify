@@ -1,9 +1,23 @@
+import onDeath from 'death';
 import VaccineChecker from './vaccineChecker';
+import { createConnection } from './db';
 
-const tasks = [
-  VaccineChecker(),
-];
+const init = async () => {
+  await createConnection();
 
-tasks.forEach((task) => {
-  task.start();
-});
+  const tasks = [
+    VaccineChecker(),
+  ];
+
+  tasks.forEach((task) => {
+    task.start();
+  });
+
+  console.info('App start successful');
+
+  onDeath((signal) => {
+    console.log(signal, 'die');
+  });
+};
+
+init();

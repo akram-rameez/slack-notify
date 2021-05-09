@@ -1,6 +1,7 @@
 version: "3.6"
 services:
-    node:
+    web:
+        build:
+            target: dev
+        command: yarn dev
         env_file: ../.env.development
-        environment:
-          DEBUG: 'true'

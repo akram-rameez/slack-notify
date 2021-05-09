@@ -1,10 +1,17 @@
 version: "3.6"
 services:
-    node:
-        image: node
-        build: ../.
-        command: yarn run dev
+    web:
+        container_name: web
+        build:
+            context: ../
+        working_dir: /src
         volumes:
-            - ../:/usr/app
-            - /usr/app/node_modules
-        env_file: ../.env.development
+            - ../:/src
+        links:
+            - db
+    db:
+        container_name: db
+        image: mongo
+        restart: always
+        volumes:
+            - ../db:/data/db
