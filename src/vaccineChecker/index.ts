@@ -5,6 +5,7 @@ import {
 } from 'cowin-api-client';
 import sendMessage from '../utils/slackMessage';
 import generateTimeString, { GenerateCronTimeStringInterface } from '../utils/cronScheduleGenerator';
+import redis from '../db/redis';
 
 const time: GenerateCronTimeStringInterface = {
 };
@@ -21,7 +22,10 @@ const addresses = [
 ];
 
 const init = async () => {
-  const appointmentRequests = await calendarByDistrict(276, '08-05-2021');
+  let oldCentersList = await redis.getAsync('availableCenters');
+  oldCentersList = JSON.parse(oldCentersList || '[]');
+
+  const appointmentRequests = await calendarByDistrict(269, '08-05-2021');
 
   const availableAppointments: { date: string; name: string; district: string; pincode: number; ageLimit: number; vaccine: string; }[] = [];
   appointmentRequests.centers.forEach((center) => {
@@ -39,18 +43,36 @@ const init = async () => {
     });
   });
 
-  console.log(availableAppointments.map((x) => ({ name: x.name, data: x.date })));
+  const centers: { [key: string]: any[] } = {};
+  availableAppointments.forEach((apt) => {
+    const { name, ...rest } = apt;
+
+    if (!centers[name]) {
+      centers[name] = [];
+    }
+
+    centers[name].push(rest);
+  });
+
+  Object.keys(centers).forEach((name) => {
+    if (!oldCentersList?.includes(name)) {
+      // fire slack call
+      sendMessage({
+        channel: '#testing',
+        text: `vaccine available at ${name}`,
+      });
+    }
+  });
+
+  const centerList = Object.keys(centers).sort();
+  redis.setAsync('availableCenters', JSON.stringify(centerList));
 };
 
 const main = () => {
   const str = generateTimeString(time);
-  init();
 
   const task = cron.schedule(str, async () => {
-    sendMessage({
-      channel: '#testing',
-      text: 'ping',
-    });
+    init();
   });
 
   return task;

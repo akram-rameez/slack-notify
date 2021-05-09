@@ -8,10 +8,16 @@ services:
         volumes:
             - ../:/src
         links:
-            - db
-    db:
-        container_name: db
+            - mongodb
+            - redisdb
+    mongodb:
+        container_name: mongodb
         image: mongo
         restart: always
         volumes:
-            - ../db:/data/db
+            - ../db/mongo:/data/db
+    redisdb:
+        container_name: redisdb
+        image: redis
+        volumes:
+            - ../db/redis:/data
