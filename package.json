@@ -7,9 +7,9 @@
   "scripts": {
     "dev": "tsnd --respawn --files -r @babel/register --inspect -- src/index.ts",
     "build": "babel ./src -d ./dist --extensions .ts --copy-files",
+    "pre-start": "babel ./src -d ./dist --extensions .ts --copy-files",
     "typecheck": "tsc",
     "start": "node dist/index.js",
-    "build:start": "yarn run build && yarn run start",
     "lint:base": "eslint --ext .js,.json,.ts",
     "lint": "yarn lint:base src"
   },
@@ -59,6 +59,7 @@
     "@slack/web-api": "^6.1.0",
     "add": "^2.0.6",
     "assert": "^2.0.0",
+    "babel-cli": "^6.26.0",
     "core-js": "^3.12.1",
     "cowin-api-client": "^0.0.2",
     "death": "^1.1.0",
