@@ -2,15 +2,14 @@ version: "3.8"
 services:
     web:
         container_name: web
-        build:
-            context: ../
+        image: node
         working_dir: /app
         volumes:
             - ../:/app
-            - /app/node_modules
         links:
             - mongodb
             - redisdb
+        command: /app/.entrypoint.sh
     mongodb:
         container_name: mongodb
         image: mongo
