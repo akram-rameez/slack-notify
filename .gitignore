@@ -1,4 +1,4 @@
-db
+db-volume
 node_modules
 .env.production
 .env.development

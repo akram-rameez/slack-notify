@@ -15,9 +15,9 @@ services:
         image: mongo
         restart: always
         volumes:
-            - ../db/mongo:/data/db
+            - ../db-volume/mongo:/data/db
     redisdb:
         container_name: redisdb
         image: redis
         volumes:
-            - ../db/redis:/data
+            - ../db-volume/redis:/data
