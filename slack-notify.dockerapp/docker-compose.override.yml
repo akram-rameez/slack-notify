@@ -1,8 +1,5 @@
 version: "3.8"
 services:
     web:
-        build:
-            context: ../
-            target: dev
         command: /app/.entrypoint.sh
         env_file: ../.env.development
