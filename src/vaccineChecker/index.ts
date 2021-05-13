@@ -22,8 +22,8 @@ const addresses = [
 ];
 
 const init = async () => {
-  let oldCentersList = await redis.getAsync('availableCenters');
-  oldCentersList = JSON.parse(oldCentersList || '[]');
+  // let oldCentersList = await redis.getAsync('availableCenters');
+  // oldCentersList = JSON.parse(oldCentersList || '[]');
 
   const appointmentRequests = await calendarByDistrict(269, '08-05-2021');
 
@@ -54,18 +54,20 @@ const init = async () => {
     centers[name].push(rest);
   });
 
-  Object.keys(centers).forEach((name) => {
-    if (!oldCentersList?.includes(name)) {
-      // fire slack call
-      sendMessage({
-        channel: '#testing',
-        text: `vaccine available at ${name}`,
-      });
-    }
-  });
+  console.log(centers);
 
-  const centerList = Object.keys(centers).sort();
-  redis.setAsync('availableCenters', JSON.stringify(centerList));
+  // Object.keys(centers).forEach((name) => {
+  //   if (!oldCentersList?.includes(name)) {
+  //     // fire slack call
+  //     sendMessage({
+  //       channel: '#testing',
+  //       text: `vaccine available at ${name}`,
+  //     });
+  //   }
+  // });
+
+  // const centerList = Object.keys(centers).sort();
+  // redis.setAsync('availableCenters', JSON.stringify(centerList));
 };
 
 const main = () => {

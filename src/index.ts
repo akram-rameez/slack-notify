@@ -4,8 +4,8 @@ import { createConnection } from './db/mongo';
 import redisClient from './db/redis';
 
 const init = async () => {
-  await createConnection();
-  await redisClient.setAsync('appStartTime', `${new Date()}`);
+  // await createConnection();
+  // await redisClient.setAsync('appStartTime', `${new Date()}`);
 
   const tasks = [
     VaccineChecker(),
