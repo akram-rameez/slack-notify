@@ -1,5 +1,5 @@
 version: "3.8"
 services:
     web:
-        command: /app/.entrypoint.prod.sh
+        command: yarn start
         env_file: ../.env.production
