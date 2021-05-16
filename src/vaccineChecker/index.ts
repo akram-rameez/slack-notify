@@ -12,15 +12,15 @@ const time: GenerateCronTimeStringInterface = {
 };
 
 // eslint-disable-next-line no-unused-vars
-const addresses = [
-  {
-    state: 'Karnataka',
-    state_id: 16,
-    district: 'Dakshina Kannada',
-    district_id: 269,
-    pinCode: 574154,
-  },
-];
+// const addresses = [
+//   {
+//     state: 'Karnataka',
+//     state_id: 16,
+//     district: 'Dakshina Kannada',
+//     district_id: 269,
+//     pinCode: 574154,
+//   },
+// ];
 
 const init = async () => {
   let oldCentersList = await redis.getAsync('availableCenters');
