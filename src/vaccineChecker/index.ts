@@ -9,7 +9,7 @@ import generateTimeString, { GenerateCronTimeStringInterface } from '../utils/cr
 import redis from '../db/redis';
 
 const time: GenerateCronTimeStringInterface = {
-  minute: 5,
+  minute: 1,
 };
 
 // eslint-disable-next-line no-unused-vars
@@ -69,11 +69,12 @@ const init = async () => {
     }
   });
 
+  const centerList = Object.keys(centers).sort();
   if (!centerAvailable) {
     console.log(`No Vaccine found @ ${moment().format()}`);
+    console.log(`${centerList.length} centers checked`);
   }
 
-  const centerList = Object.keys(centers).sort();
   redis.setAsync('availableCenters', JSON.stringify(centerList));
 };
 
