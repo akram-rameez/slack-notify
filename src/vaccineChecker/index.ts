@@ -9,7 +9,6 @@ import generateTimeString, { GenerateCronTimeStringInterface } from '../utils/cr
 import redis from '../db/redis';
 
 const time: GenerateCronTimeStringInterface = {
-  minute: 1,
 };
 
 // eslint-disable-next-line no-unused-vars
