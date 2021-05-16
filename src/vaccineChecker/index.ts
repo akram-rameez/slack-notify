@@ -56,8 +56,11 @@ const init = async () => {
     centers[name].push(rest);
   });
 
+  let centerAvailable = false;
   Object.keys(centers).forEach((name) => {
     if (!oldCentersList?.includes(name)) {
+      centerAvailable = true;
+
       // fire slack call
       sendMessage({
         channel: '#vaccine-checker',
@@ -65,6 +68,10 @@ const init = async () => {
       });
     }
   });
+
+  if (!centerAvailable) {
+    console.log('No Vaccine found');
+  }
 
   const centerList = Object.keys(centers).sort();
   redis.setAsync('availableCenters', JSON.stringify(centerList));
