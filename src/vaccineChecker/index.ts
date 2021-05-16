@@ -70,7 +70,7 @@ const init = async () => {
   });
 
   if (!centerAvailable) {
-    console.log('No Vaccine found');
+    console.log(`No Vaccine found @ ${moment().format()}`);
   }
 
   const centerList = Object.keys(centers).sort();
