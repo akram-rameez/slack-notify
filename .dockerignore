@@ -1,5 +1,5 @@
-db
 .git
 node_modules
 dist
 npm-debug.log
+db-volume
