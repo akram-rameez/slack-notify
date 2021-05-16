@@ -58,7 +58,7 @@ const init = async () => {
     if (!oldCentersList?.includes(name)) {
       // fire slack call
       sendMessage({
-        channel: '#testing',
+        channel: '#vaccine-checker',
         text: `vaccine available at ${name}`,
       });
     }

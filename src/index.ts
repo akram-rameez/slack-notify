@@ -2,10 +2,16 @@
 import VaccineChecker from './vaccineChecker';
 import { createConnection } from './db/mongo';
 import redisClient from './db/redis';
+import fireMessage from './utils/slackMessage';
 
 const init = async () => {
-  // await createConnection();
-  // await redisClient.setAsync('appStartTime', `${new Date()}`);
+  await createConnection();
+  await redisClient.setAsync('appStartTime', `${new Date()}`);
+
+  fireMessage({
+    channel: '#bot-dev',
+    text: `App Start @ ${new Date()}`,
+  });
 
   const tasks = [
     VaccineChecker(),
