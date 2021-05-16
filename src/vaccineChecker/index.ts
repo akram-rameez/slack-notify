@@ -26,6 +26,7 @@ const init = async () => {
   let oldCentersList = await redis.getAsync('availableCenters');
   oldCentersList = JSON.parse(oldCentersList || '[]');
 
+  console.log('COWIN API called @', moment().format());
   const appointmentRequests = await calendarByDistrict(269, moment().format('DD-MM-YYYY'));
 
   const availableAppointments: { date: string; name: string; district: string; pincode: number; ageLimit: number; vaccine: string; }[] = [];
