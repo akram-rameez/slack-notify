@@ -3,6 +3,7 @@ import cron from 'node-cron';
 import {
   calendarByDistrict,
 } from 'cowin-api-client';
+import moment from 'moment';
 import sendMessage from '../utils/slackMessage';
 import generateTimeString, { GenerateCronTimeStringInterface } from '../utils/cronScheduleGenerator';
 import redis from '../db/redis';
@@ -26,7 +27,7 @@ const init = async () => {
   let oldCentersList = await redis.getAsync('availableCenters');
   oldCentersList = JSON.parse(oldCentersList || '[]');
 
-  const appointmentRequests = await calendarByDistrict(269, '08-05-2021');
+  const appointmentRequests = await calendarByDistrict(269, moment().format('DD-MM-YYYY'));
 
   const availableAppointments: { date: string; name: string; district: string; pincode: number; ageLimit: number; vaccine: string; }[] = [];
   appointmentRequests.centers.forEach((center) => {
