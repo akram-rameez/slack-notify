@@ -5,8 +5,6 @@ services:
         build:
             context: ../
         working_dir: /app
-        volumes:
-            - ../:/app
         links:
             - mongodb
             - redisdb
