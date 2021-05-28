@@ -73,7 +73,7 @@ const init = async () => {
       const { name } = availableAppointments[aptKey];
 
       sendMessage({
-        channel: '#vaccine-checker',
+        channel: '#vaccine',
         text: `Vaccine Available @ ${name}`,
         blocks: generateMessageTemplate(availableAppointments[aptKey]),
       });
