@@ -14,13 +14,14 @@ const time: GenerateCronTimeStringInterface = {
   second: '*/15',
 };
 
+// const oldAppointmentList: any[] = [];
 const init = async () => {
   const oldAppointmentListReserve = await redis.getAsync('availableAppointments');
   const oldAppointmentList = JSON.parse(oldAppointmentListReserve || '[]');
 
   console.log('COWIN API called @', moment().format());
-  const appointmentRequests = await calendarByDistrict(264, moment().format('DD-MM-YYYY'));
-  const appointmentRequestsNextWeek = await calendarByDistrict(264, moment().add(7, 'd').format('DD-MM-YYYY'));
+  const appointmentRequests = await calendarByDistrict(269, moment().format('DD-MM-YYYY'));
+  const appointmentRequestsNextWeek = await calendarByDistrict(269, moment().add(7, 'd').format('DD-MM-YYYY'));
 
   const availableAppointments: { [key: string]: any } = {};
   appointmentRequests.centers.forEach((center) => {
@@ -74,12 +75,14 @@ const init = async () => {
     });
   });
 
-  console.log(Object.keys(oldAppointmentList));
+  console.log(oldAppointmentList);
 
+  const newCenters: string[] = [];
   Object.keys(availableAppointments).forEach((aptKey: string) => {
     if (!oldAppointmentList.includes(aptKey)) {
       const { name } = availableAppointments[aptKey];
 
+      newCenters.push(name);
       sendMessage({
         channel: '#vaccine-checker',
         text: `Vaccine Available @ ${name}`,
@@ -88,6 +91,10 @@ const init = async () => {
     }
   });
 
+  const deleted = oldAppointmentList.filter((center: string) => !availableAppointments[center]);
+  console.log(`Found ${newCenters.length} new centers. Removed ${deleted.length} centers`);
+
+  // oldAppointmentList = Object.keys(availableAppointments);
   redis.setAsync('availableAppointments', JSON.stringify(Object.keys(availableAppointments)));
 };
 
