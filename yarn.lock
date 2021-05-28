@@ -1803,7 +1803,7 @@ cosmiconfig@^7.0.0:
 
 cowin-api-client@^0.0.2:
   version "0.0.2"
-  resolved "https://registry.npmjs.org/cowin-api-client/-/cowin-api-client-0.0.2.tgz"
+  resolved "https://registry.yarnpkg.com/cowin-api-client/-/cowin-api-client-0.0.2.tgz#8c9fd8a1e575003cf2a731b32d4fd7320d037e2a"
   integrity sha512-N73VDYq5/4pHv0nzprBdosSvLdQOkn0iAK0C+m+602Ke5fz/tlJBxxKOp6x03moHZhzxRaZyBCahGiGhQQVk6Q==
   dependencies:
     axios "^0.21.1"
@@ -3365,12 +3365,7 @@ moment-timezone@^0.5.31:
   dependencies:
     moment ">= 2.9.0"
 
-"moment@>= 2.9.0":
-  version "2.29.1"
-  resolved "https://registry.npmjs.org/moment/-/moment-2.29.1.tgz"
-  integrity sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==
-
-moment@^2.29.1:
+"moment@>= 2.9.0", moment@^2.29.1:
   version "2.29.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
   integrity sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==

@@ -5,11 +5,12 @@ const web = new WebClient(process.env.SLACK_TOKEN);
 
 interface SlackMessagePayload {
     channel: string;
-    text: string;
+    text?: string;
+    blocks?: any;
 }
 
 const fireMessage = async (messagePayload: SlackMessagePayload) => {
-  const { channel, text } = messagePayload;
+  const { channel, text = '', blocks } = messagePayload;
 
   console.log(`Slack: ${channel}: ${text} @ ${new Date()}`);
 
@@ -22,6 +23,7 @@ const fireMessage = async (messagePayload: SlackMessagePayload) => {
       await web.chat.postMessage({
         channel,
         text,
+        blocks,
       });
     }
   } catch (err) {

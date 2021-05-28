@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable max-len */
 import cron from 'node-cron';
 import {
@@ -7,76 +8,75 @@ import moment from 'moment';
 import sendMessage from '../utils/slackMessage';
 import generateTimeString, { GenerateCronTimeStringInterface } from '../utils/cronScheduleGenerator';
 import redis from '../db/redis';
+import generateMessageTemplate from './messageTemplate';
 
 const time: GenerateCronTimeStringInterface = {
-  second: '*/10',
+  second: '*/15',
 };
 
-// eslint-disable-next-line no-unused-vars
-// const addresses = [
-//   {
-//     state: 'Karnataka',
-//     state_id: 16,
-//     district: 'Dakshina Kannada',
-//     district_id: 269,
-//     pinCode: 574154,
-//   },
-// ];
-
 const init = async () => {
-  let oldCentersList = await redis.getAsync('availableCenters');
-  oldCentersList = JSON.parse(oldCentersList || '[]');
+  const oldAppointmentListReserve = await redis.getAsync('availableAppointments');
+  const oldAppointmentList = JSON.parse(oldAppointmentListReserve || '{}');
 
   console.log('COWIN API called @', moment().format());
   const appointmentRequests = await calendarByDistrict(269, moment().format('DD-MM-YYYY'));
+  const appointmentRequestsNextWeek = await calendarByDistrict(269, moment().add(7, 'd').format('DD-MM-YYYY'));
 
-  const availableAppointments: { date: string; name: string; district: string; pincode: number; ageLimit: number; vaccine: string; }[] = [];
+  const availableAppointments: { [key: string]: any } = {};
   appointmentRequests.centers.forEach((center) => {
-    center.sessions.forEach((session) => {
-      if (session.available_capacity > 0) {
-        availableAppointments.push({
-          date: session.date,
-          name: center.name,
-          district: center.district_name,
-          pincode: center.pincode,
-          ageLimit: session.min_age_limit,
-          vaccine: session.vaccine,
-        });
+    const { center_id, name, sessions } = center;
+
+    sessions.forEach((session) => {
+      const {
+        // @ts-ignore
+        available_capacity_dose1, available_capacity_dose2, date, vaccine,
+      } = session;
+
+      if (available_capacity_dose1 > 0 || available_capacity_dose2 > 0) {
+        if (!availableAppointments[`${center_id}:${name}:${date}`]) {
+          availableAppointments[`${center_id}:${name}:${date}`] = {
+            date,
+            ...center,
+          };
+        }
+
+        availableAppointments[`${center_id}:${name}:${date}`][vaccine] = session;
       }
     });
   });
 
-  const centers: { [key: string]: any[] } = {};
-  availableAppointments.forEach((apt) => {
-    const { name, ...rest } = apt;
+  appointmentRequestsNextWeek.centers.forEach((center) => {
+    const { center_id, name, sessions } = center;
 
-    if (!centers[name]) {
-      centers[name] = [];
-    }
+    sessions.forEach((session) => {
+      const {
+        // @ts-ignore
+        available_capacity_dose1, available_capacity_dose2, date, vaccine,
+      } = session;
 
-    centers[name].push(rest);
+      if (available_capacity_dose1 > 0 || available_capacity_dose2 > 0) {
+        if (!availableAppointments[`${center_id}:${name}:${date}`]) {
+          availableAppointments[`${center_id}:${name}:${date}`] = {
+            date,
+            ...center,
+          };
+        }
+
+        availableAppointments[`${center_id}:${name}:${date}`][vaccine] = session;
+      }
+    });
   });
 
-  let centerAvailable = false;
-  Object.keys(centers).forEach((name) => {
-    if (!oldCentersList?.includes(name)) {
-      centerAvailable = true;
-
-      // fire slack call
+  Object.keys(availableAppointments).forEach((aptKey: string) => {
+    if (!oldAppointmentList![aptKey]) {
       sendMessage({
         channel: '#vaccine-checker',
-        text: `vaccine available at ${name}`,
+        blocks: generateMessageTemplate(oldAppointmentList[aptKey]),
       });
     }
   });
 
-  const centerList = Object.keys(centers).sort();
-  if (!centerAvailable) {
-    console.log(`No Vaccine found @ ${moment().format()}`);
-    console.log(`${centerList.length} centers checked`);
-  }
-
-  redis.setAsync('availableCenters', JSON.stringify(centerList));
+  redis.setAsync('availableCenters', JSON.stringify(availableAppointments));
 };
 
 const main = () => {
