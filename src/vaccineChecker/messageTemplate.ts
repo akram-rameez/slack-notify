@@ -143,6 +143,8 @@ const generateMessageTemplate = (apt: any) => {
       action_id: 'button-action',
     },
   });
+
+  return blocks;
 };
 
 export default generateMessageTemplate;
