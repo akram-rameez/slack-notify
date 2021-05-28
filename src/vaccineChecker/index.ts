@@ -29,10 +29,14 @@ const init = async () => {
     sessions.forEach((session) => {
       const {
         // @ts-ignore
-        available_capacity_dose1, available_capacity_dose2, date, vaccine,
+        available_capacity_dose1,
+        // available_capacity_dose2,
+        date,
+        vaccine,
       } = session;
 
-      if (available_capacity_dose1 > 0 || available_capacity_dose2 > 0) {
+      // if (available_capacity_dose1 > 0 || available_capacity_dose2 > 0) {
+      if (available_capacity_dose1 > 0) {
         if (!availableAppointments[`${center_id}:${name}:${date}`]) {
           availableAppointments[`${center_id}:${name}:${date}`] = {
             date,
@@ -50,10 +54,14 @@ const init = async () => {
     sessions.forEach((session) => {
       const {
         // @ts-ignore
-        available_capacity_dose1, available_capacity_dose2, date, vaccine,
+        available_capacity_dose1,
+        // available_capacity_dose2,
+        date,
+        vaccine,
       } = session;
 
-      if (available_capacity_dose1 > 0 || available_capacity_dose2 > 0) {
+      // if (available_capacity_dose1 > 0 || available_capacity_dose2 > 0) {
+      if (available_capacity_dose1 > 0) {
         if (!availableAppointments[`${center_id}:${name}:${date}`]) {
           availableAppointments[`${center_id}:${name}:${date}`] = {
             date,
@@ -73,7 +81,7 @@ const init = async () => {
       const { name } = availableAppointments[aptKey];
 
       sendMessage({
-        channel: '#vaccine',
+        channel: '#vaccine-checker',
         text: `Vaccine Available @ ${name}`,
         blocks: generateMessageTemplate(availableAppointments[aptKey]),
       });

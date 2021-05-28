@@ -1,6 +1,6 @@
 export default [
   '#general',
   '#testing',
-  '#vaccine',
+  '#vaccine-checker',
   '#bot-dev',
 ];
