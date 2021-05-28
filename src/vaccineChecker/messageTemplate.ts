@@ -12,7 +12,7 @@ const generateMessageTemplate = (apt: any) => {
     COVAXIN,
     COVISHIELD,
     date,
-    vaccine_fees,
+    vaccine_fees = [],
   } = apt;
 
   const feesMap = vaccine_fees.reduce((acc: any, cur: { vaccine: any; fee: any; }) => {
