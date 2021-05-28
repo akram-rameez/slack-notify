@@ -44,7 +44,6 @@ const init = async () => {
       }
     });
   });
-
   appointmentRequestsNextWeek.centers.forEach((center) => {
     const { center_id, name, sessions } = center;
 
@@ -67,8 +66,10 @@ const init = async () => {
     });
   });
 
+  console.log(Object.keys(oldAppointmentList));
+
   Object.keys(availableAppointments).forEach((aptKey: string) => {
-    if (!oldAppointmentList![aptKey]) {
+    if (!oldAppointmentList[aptKey]) {
       sendMessage({
         channel: '#vaccine-checker',
         blocks: generateMessageTemplate(availableAppointments[aptKey]),
