@@ -23,9 +23,6 @@ const generateMessageTemplate = (apt: any) => {
     };
   }, {});
 
-  const { min_age_limit: azMinAgeLimit } = COVISHIELD;
-  const { min_age_limit: cvMinAgeLimit } = COVAXIN;
-
   const blocks = [];
 
   // name
@@ -39,6 +36,8 @@ const generateMessageTemplate = (apt: any) => {
   });
 
   if (COVISHIELD) {
+    const { min_age_limit: azMinAgeLimit } = COVISHIELD;
+
     blocks.push({
       type: 'section',
       fields: [
@@ -82,6 +81,8 @@ const generateMessageTemplate = (apt: any) => {
   }
 
   if (COVAXIN) {
+    const { min_age_limit: cvMinAgeLimit } = COVAXIN;
+
     blocks.push({
       type: 'section',
       fields: [
