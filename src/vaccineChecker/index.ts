@@ -71,7 +71,7 @@ const init = async () => {
     if (!oldAppointmentList![aptKey]) {
       sendMessage({
         channel: '#vaccine-checker',
-        blocks: generateMessageTemplate(oldAppointmentList[aptKey]),
+        blocks: generateMessageTemplate(availableAppointments[aptKey]),
       });
     }
   });

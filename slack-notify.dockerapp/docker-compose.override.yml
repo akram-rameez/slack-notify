@@ -1,6 +1,8 @@
 version: "3.8"
 services:
     web:
+        build:
+            target: development
         volumes:
             - ../:/app
         command: yarn dev

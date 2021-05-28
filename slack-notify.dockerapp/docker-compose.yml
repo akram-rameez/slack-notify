@@ -8,7 +8,6 @@ services:
         links:
             - mongodb
             - redisdb
-        command: /app/.entrypoint.sh
     mongodb:
         container_name: mongodb
         image: mongo
