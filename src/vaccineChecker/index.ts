@@ -16,7 +16,7 @@ const time: GenerateCronTimeStringInterface = {
 
 const init = async () => {
   const oldAppointmentListReserve = await redis.getAsync('availableAppointments');
-  const oldAppointmentList = JSON.parse(oldAppointmentListReserve || '{}');
+  const oldAppointmentList = JSON.parse(oldAppointmentListReserve || '[]');
 
   console.log('COWIN API called @', moment().format());
   const appointmentRequests = await calendarByDistrict(269, moment().format('DD-MM-YYYY'));
@@ -69,15 +69,18 @@ const init = async () => {
   console.log(Object.keys(oldAppointmentList));
 
   Object.keys(availableAppointments).forEach((aptKey: string) => {
-    if (!oldAppointmentList[aptKey]) {
+    if (!oldAppointmentList.includes(aptKey)) {
+      const { name } = availableAppointments[aptKey];
+
       sendMessage({
         channel: '#vaccine-checker',
+        text: `Vaccine Available @ ${name}`,
         blocks: generateMessageTemplate(availableAppointments[aptKey]),
       });
     }
   });
 
-  redis.setAsync('availableCenters', JSON.stringify(availableAppointments));
+  redis.setAsync('availableAppointments', JSON.stringify(Object.keys(availableAppointments)));
 };
 
 const main = () => {
