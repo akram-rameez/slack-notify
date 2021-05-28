@@ -19,8 +19,8 @@ const init = async () => {
   const oldAppointmentList = JSON.parse(oldAppointmentListReserve || '[]');
 
   console.log('COWIN API called @', moment().format());
-  const appointmentRequests = await calendarByDistrict(269, moment().format('DD-MM-YYYY'));
-  const appointmentRequestsNextWeek = await calendarByDistrict(269, moment().add(7, 'd').format('DD-MM-YYYY'));
+  const appointmentRequests = await calendarByDistrict(264, moment().format('DD-MM-YYYY'));
+  const appointmentRequestsNextWeek = await calendarByDistrict(264, moment().add(7, 'd').format('DD-MM-YYYY'));
 
   const availableAppointments: { [key: string]: any } = {};
   appointmentRequests.centers.forEach((center) => {
