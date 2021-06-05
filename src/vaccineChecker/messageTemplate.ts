@@ -15,6 +15,10 @@ const generateMessageTemplate = (apt: any) => {
     vaccine_fees = [],
   } = apt;
 
+  if (!COVAXIN) {
+    throw new Error('no covaxin :(');
+  }
+
   const feesMap = vaccine_fees.reduce((acc: any, cur: { vaccine: any; fee: any; }) => {
     const { vaccine, fee } = cur;
     return {
