@@ -7,10 +7,10 @@ const generateMessageTemplate = (apt: any) => {
     district_name,
     state_name,
     pincode,
-    lat,
-    long,
+    // lat,
+    // long,
     COVAXIN,
-    COVISHIELD,
+    // COVISHIELD,
     date,
     vaccine_fees = [],
   } = apt;
@@ -35,53 +35,75 @@ const generateMessageTemplate = (apt: any) => {
     },
   });
 
-  if (COVISHIELD) {
-    const { min_age_limit: azMinAgeLimit } = COVISHIELD;
+  // if (COVISHIELD) {
+  //   const {
+  //     min_age_limit: minAgeLimit,
+  //     // available_capacity_dose1,
+  //     available_capacity_dose2,
+  //   } = COVISHIELD;
 
-    blocks.push({
-      type: 'section',
-      fields: [
-        {
-          type: 'plain_text',
-          text: 'Vaccine Available: COVISHIELD',
-          emoji: true,
-        },
-        {
-          type: 'plain_text',
-          text: `Date: ${date}`,
-          emoji: true,
-        },
-        {
-          type: 'plain_text',
-          text: `Age Group: ${azMinAgeLimit === 18 ? '18-44' : '45+'}`,
-          emoji: true,
-        },
-      ],
-    });
+  //   blocks.push({
+  //     type: 'section',
+  //     fields: [
+  //       {
+  //         type: 'plain_text',
+  //         text: 'Vaccine Available: COVISHIELD',
+  //         emoji: true,
+  //       },
+  //       {
+  //         type: 'plain_text',
+  //         text: `Date: ${date}`,
+  //         emoji: true,
+  //       },
+  //       {
+  //         type: 'plain_text',
+  //         text: `Age Group: ${minAgeLimit === 18 ? '18-44' : '45+'}`,
+  //         emoji: true,
+  //       },
+  //       {
+  //         type: 'plain_text',
+  //         text: `Age Group: ${minAgeLimit === 18 ? '18-44' : '45+'}`,
+  //         emoji: true,
+  //       },
+  //       {
+  //         type: 'plain_text',
+  //         text: `Available: ${available_capacity_dose2}`,
+  //         emoji: true,
+  //       },
+  //     ],
+  //   });
 
-    if (feesMap.COVISHIELD) {
-      blocks.push(
-        {
-          type: 'context',
-          elements: [
-            {
-              type: 'mrkdwn',
-              text: `*Paid:* ₹${feesMap.COVISHIELD}`,
-            },
-          ],
-        },
-      );
-    }
+  //   if (feesMap.COVISHIELD) {
+  //     blocks.push(
+  //       {
+  //         type: 'context',
+  //         elements: [
+  //           {
+  //             type: 'mrkdwn',
+  //             text: `*Paid:* ₹${feesMap.COVISHIELD}`,
+  //           },
+  //         ],
+  //       },
+  //     );
+  //   }
 
-    blocks.push(
-      {
-        type: 'divider',
-      },
-    );
-  }
+  //   blocks.push(
+  //     {
+  //       type: 'divider',
+  //     },
+  //   );
+  // }
 
   if (COVAXIN) {
-    const { min_age_limit: cvMinAgeLimit } = COVAXIN;
+    const {
+      min_age_limit: minAgeLimit,
+      // available_capacity_dose1,
+      available_capacity_dose2,
+    } = COVAXIN;
+
+    if (minAgeLimit !== 18) {
+      throw new Error('Not in required age group');
+    }
 
     blocks.push({
       type: 'section',
@@ -98,7 +120,12 @@ const generateMessageTemplate = (apt: any) => {
         },
         {
           type: 'plain_text',
-          text: `Age Group: ${cvMinAgeLimit === 18 ? '18-44' : '45+'}`,
+          text: `Age Group: ${minAgeLimit === 18 ? '18-44' : '45+'}`,
+          emoji: true,
+        },
+        {
+          type: 'plain_text',
+          text: `Available: ${available_capacity_dose2}`,
           emoji: true,
         },
       ],
@@ -131,18 +158,24 @@ const generateMessageTemplate = (apt: any) => {
       type: 'mrkdwn',
       text: `${[address, block_name, district_name, state_name].filter(Boolean).join(', ')} - ${pincode}`,
     },
-    accessory: {
-      type: 'button',
-      text: {
-        type: 'plain_text',
-        text: 'Navigate',
-        emoji: true,
-      },
-      value: 'navigate-link',
-      url: `https://www.google.com/maps/search/?api=1&query=${lat},${long}`,
-      action_id: 'button-action',
-    },
+    // accessory: {
+    //   type: 'button',
+    //   text: {
+    //     type: 'plain_text',
+    //     text: 'Navigate',
+    //     emoji: true,
+    //   },
+    //   value: 'navigate-link',
+    //   url: `https://www.google.com/maps/search/?api=1&query=${lat},${long}`,
+    //   action_id: 'button-action',
+    // },
   });
+
+  blocks.push(
+    {
+      type: 'divider',
+    },
+  );
 
   return blocks;
 };

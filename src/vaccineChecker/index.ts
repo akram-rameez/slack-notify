@@ -30,22 +30,33 @@ const init = async () => {
     sessions.forEach((session) => {
       const {
         // @ts-ignore
-        available_capacity_dose1,
-        // available_capacity_dose2,
+        // available_capacity_dose1,
+        // @ts-ignore
+        available_capacity_dose2,
         date,
         vaccine,
       } = session;
 
-      // if (available_capacity_dose1 > 0 || available_capacity_dose2 > 0) {
-      if (available_capacity_dose1 > 0) {
-        if (!availableAppointments[`${center_id}:${name}:${date}`]) {
-          availableAppointments[`${center_id}:${name}:${date}`] = {
+      // if (available_capacity_dose1 > 0) {
+      //   if (!availableAppointments[`${center_id}:${name}:${date}:dose_1`]) {
+      //     availableAppointments[`${center_id}:${name}:${date}:dose_1`] = {
+      //       date,
+      //       ...center,
+      //     };
+      //   }
+
+      //   availableAppointments[`${center_id}:${name}:${date}:dose_1`][vaccine] = session;
+      // }
+
+      if (available_capacity_dose2 > 0) {
+        if (!availableAppointments[`${center_id}:${name}:${date}:dose_2`]) {
+          availableAppointments[`${center_id}:${name}:${date}:dose_2`] = {
             date,
             ...center,
           };
         }
 
-        availableAppointments[`${center_id}:${name}:${date}`][vaccine] = session;
+        availableAppointments[`${center_id}:${name}:${date}:dose_2`][vaccine] = session;
       }
     });
   });
@@ -55,22 +66,34 @@ const init = async () => {
     sessions.forEach((session) => {
       const {
         // @ts-ignore
-        available_capacity_dose1,
-        // available_capacity_dose2,
+        // available_capacity_dose1,
+        // @ts-ignore
+        available_capacity_dose2,
         date,
         vaccine,
       } = session;
 
       // if (available_capacity_dose1 > 0 || available_capacity_dose2 > 0) {
-      if (available_capacity_dose1 > 0) {
-        if (!availableAppointments[`${center_id}:${name}:${date}`]) {
-          availableAppointments[`${center_id}:${name}:${date}`] = {
+      // if (available_capacity_dose1 > 0) {
+      //   if (!availableAppointments[`${center_id}:${name}:${date}:dose_1`]) {
+      //     availableAppointments[`${center_id}:${name}:${date}:dose_1`] = {
+      //       date,
+      //       ...center,
+      //     };
+      //   }
+
+      //   availableAppointments[`${center_id}:${name}:${date}:dose_1`][vaccine] = session;
+      // }
+
+      if (available_capacity_dose2 > 0) {
+        if (!availableAppointments[`${center_id}:${name}:${date}:dose_2`]) {
+          availableAppointments[`${center_id}:${name}:${date}:dose_2`] = {
             date,
             ...center,
           };
         }
 
-        availableAppointments[`${center_id}:${name}:${date}`][vaccine] = session;
+        availableAppointments[`${center_id}:${name}:${date}:dose_2`][vaccine] = session;
       }
     });
   });
@@ -83,11 +106,15 @@ const init = async () => {
       const { name } = availableAppointments[aptKey];
 
       newCenters.push(name);
-      sendMessage({
-        channel: '#vaccine-checker',
-        text: `Vaccine Available @ ${name}`,
-        blocks: generateMessageTemplate(availableAppointments[aptKey]),
-      });
+      try {
+        sendMessage({
+          channel: '#vaccine-checker',
+          text: `Vaccine Available @ ${name}`,
+          blocks: generateMessageTemplate(availableAppointments[aptKey]),
+        });
+      } catch (err) {
+        // console.log(err);
+      }
     }
   });
 
